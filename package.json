@@ -1,30 +1,37 @@
 {
-  "name": "esper",
+  "name": "esper2",
   "version": "1.0.0",
   "description": "Typing software written in ECMAScript",
   "directories": {
-    "doc": "doc",
     "test": "test"
   },
   "scripts": {
-    "test": "node --experimental-modules ./test/exec.mjs",
-    "lint": "eslint src/**/*.mjs test/**/*.mjs",
-    "doc": "jsdoc -c ./jsdoc.json ."
+    "typecheck": "tsc",
+    "test": "mocha --require ts-node/register ./test/*.js",
+    "lint": "eslint src/**/*.js test/**/*.js",
+    "fix": "eslint --fix src/**/*.js test/**/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/syusui-s/esper.git"
+    "url": "git+https://github.com/syusui-s/esper2.git"
   },
   "author": "Shusui Moyatani",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/syusui-s/esper/issues"
+    "url": "https://github.com/syusui-s/esper2/issues"
   },
-  "homepage": "https://github.com/syusui-s/esper#readme",
+  "homepage": "https://github.com/syusui-s/esper2#readme",
   "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.2",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
     "eslint": "^6.0.1",
-    "jsdoc": "^3.6.2",
-    "marked": "^0.7.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "mocha": "^6.1.4",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   }
 }

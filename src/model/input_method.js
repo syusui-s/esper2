@@ -1,13 +1,17 @@
 /** @module model/input_method */
 
+import { KeyboardMap } from './keyboard_map.js';
+
 /**
  * 入力方式
+ * キーボードなどからの入力情報を受け取り、
  *
  * 子クラスは、consumeメソッドを実装しなければならない。
  *
+ * @abstract
  * @type {InputMethod}
  * @property {string} name
- * @property {string} characterTypes 
+ * @property {string} characterTypes
  */
 class InputMethod {
   /**
@@ -39,14 +43,14 @@ class InputMethod {
    * 出力文字列に文字列を追加する
    *
    * @param {string} output 追加したい文字列
-   * @return {undefined}
+   * @return {void}
    */
   addOutput(output) {
     this.output += output;
   }
 
   /**
-   * 出力
+   * 出力を取得し、内部状態をクリアする
    */
   takeOutput() {
     const output = this.output;
@@ -54,30 +58,29 @@ class InputMethod {
 
     return output;
   }
-}
 
-/**
- * keyに基づいてキーの入力を受け取る場合の処理
- */
-class DirectInputMethod extends InputMethod {
-  constructor(name, characterTypes) {
-    super(name, characterTypes);
-  }
-
-  consume(keyboardEvent) {
-    this.addOutput(this.addOutput.key);
-  }
+  /**
+   * @abstract
+   * @param {KeyboardEvent} keyEvent
+   */
+  consume(keyEvent) {}
 }
 
 /**
  * キーボード配列に基づいて、キーボードの配列
  */
-class KeyoardMapInputMethod extends InputMethod {
+class KeyboardMapInputMethod extends InputMethod {
+  /**
+   * @param {keyboardMap} KeyboardMap
+   */
   constructor(keyboardMap) {
     super(keyboardMap.name, keyboardMap.characterTypes);
     this.keyboardMap = keyboardMap;
   }
 
+  /**
+   * @override
+   */
   consume(keyEvent) {
     const keyEntry = this.keyboardMap.getKeyEntry(keyEvent.code);
     const character = keyEntry.getCharacter();

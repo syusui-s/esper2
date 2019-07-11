@@ -1,9 +1,13 @@
 /** @module model/stroke */
 
-import { DecisionTree } from '../lib/algorithm.mjs';
+import { Tree } from '../lib/algorithm.js';
 
 /**
  * ローマ字テーブルのエントリ
+ *
+ * @property {string} input
+ * @property {string} output
+ * @property {string} next
  */
 export class StrokeEntry {
   /**
@@ -20,41 +24,57 @@ export class StrokeEntry {
 
 /**
  * Google IME互換のローマ字テーブル
+ * @property {Tree} tree
  */
 export class StrokeTable {
-  static fromString(str) {
-    const map = {};
+  /**
+   * @param {string} input
+   */
+  static fromGoogleIMEFormat(input) {
+    const map = new Map();
 
-    str.split(/[\r\n]+/).forEach((line) => {
+    input.split(/[\r\n]+/).forEach(line => {
       const [input, output, next] = line.split(/\t/);
-      map[input] = new StrokeEntry(input, output, next);
+      map.set(input, new StrokeEntry(input, output, next));
     });
 
     return new StrokeTable(map);
   }
 
+  /**
+   * @param {Map<string, StrokeEntry>} map
+   */
   constructor(map) {
-    this.decisionTree = new DecisionTree();
+    this.tree = new Tree();
 
     for (const key in map) {
       const keys = key.split('');
-      const entry = map[key];
+      const entry = map.get(key);
 
-      this.decisionTree.insert(keys, entry);
+      this.tree.insert(keys, entry);
     }
   }
 
+  /**
+   * キー入力に対応するエントリ
+   *
+   * @param {string} input
+   * @return {Tree<StrokeEntry>}
+   */
   get(input) {
-    return this.decisionTree.get(input.split(''));
+    return this.tree.get(input.split(''));
   }
 }
 
 /**
  * ローマ字入力時のキーボードのストロークの状態を管理するサービス
  *
- * @param {StrokeTable} strokeTable 
+ * @property {StrokeTable} strokeTable
  */
 export class StrokeState {
+  /*
+   * @param {StrokeTable} strokeTable
+   */
   constructor(strokeTable) {
     this.strokeTable = strokeTable;
     this.reset();
@@ -77,7 +97,7 @@ export class StrokeState {
     const currentInput = this.input + character;
     const node = this.strokeTable.get(currentInput);
 
-    if (! node || ! node.hasChilds() && ! node.hasEntry()) {
+    if (!node || (!node.hasChilds() && !node.hasEntry())) {
       this.clearInput();
 
       if (this.temporaryEntry) {
@@ -94,7 +114,7 @@ export class StrokeState {
       }
     }
 
-    if (! node.hasChilds() && node.hasEntry()) {
+    if (!node.hasChilds() && node.hasEntry()) {
       const entry = node.entry;
 
       this.addOutput(entry.output);
@@ -105,7 +125,7 @@ export class StrokeState {
       return true;
     }
 
-    if (node.hasChilds() && ! node.hasEntry()) {
+    if (node.hasChilds() && !node.hasEntry()) {
       this.addInput(character);
       this.temporaryEntry = undefined;
 
@@ -122,7 +142,9 @@ export class StrokeState {
 
   addInput(input) {
     // dismiss when null-like object is passed
-    if (input == null) { return; }
+    if (input == null) {
+      return;
+    }
 
     this.input += input;
   }

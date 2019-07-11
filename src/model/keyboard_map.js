@@ -6,7 +6,7 @@
 export class KeyEntry {
   /**
    * @param {String} code キーコード
-   * @param {Object} map 
+   * @param {Object} map
    */
   constructor(code, map) {
     this.code = code;
@@ -20,7 +20,7 @@ export class KeyboardMap {
   static fromMap(name, map) {
     const mapConverted = new Map();
 
-    Object.keys(map).forEach((code) => {
+    Object.keys(map).forEach(code => {
       const entry = map[code];
       const keyEntry = new KeyEntry(code, entry);
       mapConverted.set(code, keyEntry);
@@ -40,7 +40,7 @@ export class KeyboardMap {
     if (keyEvent.modifiers.shiftKey) {
       return keyEntry.map.shift;
     } else {
-      return keyEntry.map.noShift;
+      return keyEntry.map.direct;
     }
   }
 }

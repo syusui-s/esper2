@@ -6,23 +6,28 @@ export default class TypingComponent extends Component {
   constructor(actions) {
     super(actions);
 
-    window.addEventListener('keydown',
-      (ev) => this.actions.TypingAction.keyboardEvent(ev));
+    window.addEventListener('keydown', ev =>
+      this.actions.TypingAction.keyboardEvent(ev)
+    );
   }
 
   template(props) {
-    const html = this.html `
+    const html = this.html`
       <div class="typing">
         <div class="typing__message"></div>
         <div class="vocabularies"></div>
       </div>
     `;
-    const message = props.isCounting ? props.count : props.isStopped ? 'Enter押下で開始' : '開始！';
+    const message = props.isCounting
+      ? props.count
+      : props.isStopped
+        ? 'Enter押下で開始'
+        : '開始！';
     html.querySelector('.typing__message').textContent = message;
 
     const vocabularies = props.vocabularies || [];
     const vocabularieElements = vocabularies.map((vocabulary, index) => {
-      const element = this.html `<span>${vocabulary.text}</span>`;
+      const element = this.html`<span>${vocabulary.text}</span>`;
       element.classList.add('vocabulary');
 
       if (index < props.currentIndex) {
@@ -31,7 +36,7 @@ export default class TypingComponent extends Component {
       return element;
     });
     const vocabulariesElement = html.querySelector('.vocabularies');
-    vocabularieElements.forEach((elem) => {
+    vocabularieElements.forEach(elem => {
       vocabulariesElement.appendChild(elem);
       vocabulariesElement.appendChild(document.createTextNode(' '));
     });
@@ -39,4 +44,3 @@ export default class TypingComponent extends Component {
     return html;
   }
 }
-
