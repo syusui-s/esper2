@@ -1,34 +1,17 @@
 /** @module lib/algorithm  */
 
 /**
- * 識別子と成るシンボルを保持するクラス
- */
-export class Enum {
-  /**
-   * @param {Iterable<string>} set
-   */
-  constructor(set) {
-    for (const entry of set) {
-      const entryStr = entry.toString();
-      this[entryStr] = Symbol(entryStr);
-    }
-
-    return Object.freeze(this);
-  }
-}
-
-/**
  * ツリー。節も値を保持できる。
  *
  * @template T
- * @property {Map} tree
- * @property {Tree<T> | T} entry
  */
 export class Tree {
-  /**
-   */
   constructor() {
+    /** @type {Map<String, Tree<T>>} tree */
     this.tree = new Map();
+
+    /** @type {T | undefined} entry */
+    this.entry = undefined;
   }
 
   /**
@@ -37,10 +20,12 @@ export class Tree {
    * キーの中に存在しない節があれば、値を持たない節が生成される。
    * 既存のキーが指定された場合は、新しい値で上書きされる。
    *
-   * @param {array} keys 木をトラバースするのに使われるキーの配列
-   * @param {Tree<T> | T} object 挿入される値
+   * @param {Array<String>} keys 木をトラバースするのに使われるキーの配列
+   * @param {T} object 挿入される値
    */
   insert(keys, object) {
+    /** @type Tree<T> */
+    const root = this;
     const node = keys.reduce((node, key) => {
       const entry = node.tree.get(key);
       if (entry) {
@@ -50,7 +35,7 @@ export class Tree {
         node.tree.set(key, tree);
         return tree;
       }
-    }, this);
+    }, root);
 
     node.entry = object;
   }
@@ -90,4 +75,4 @@ export class Tree {
   }
 }
 
-export default { Enum, Tree };
+export default { Tree };

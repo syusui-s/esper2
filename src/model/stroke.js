@@ -68,14 +68,13 @@ export class StrokeTable {
 
 /**
  * ローマ字入力時のキーボードのストロークの状態を管理するサービス
- *
- * @property {StrokeTable} strokeTable
  */
 export class StrokeState {
-  /*
+  /**
    * @param {StrokeTable} strokeTable
    */
   constructor(strokeTable) {
+    /** @type {StrokeTable} */
     this.strokeTable = strokeTable;
     this.reset();
   }
@@ -93,11 +92,17 @@ export class StrokeState {
     this.clearOutput();
   }
 
+  /**
+   * @param {string} character
+   * @return {boolean}
+   */
   addCharacter(character) {
     const currentInput = this.input + character;
     const node = this.strokeTable.get(currentInput);
 
-    if (!node || (!node.hasChilds() && !node.hasEntry())) {
+    const entry = node.entry;
+
+    if (!node || (!node.hasChilds() && !entry)) {
       this.clearInput();
 
       if (this.temporaryEntry) {
@@ -114,9 +119,7 @@ export class StrokeState {
       }
     }
 
-    if (!node.hasChilds() && node.hasEntry()) {
-      const entry = node.entry;
-
+    if (!node.hasChilds() && entry) {
       this.addOutput(entry.output);
       this.clearInput();
       this.addInput(entry.next);
@@ -125,21 +128,26 @@ export class StrokeState {
       return true;
     }
 
-    if (node.hasChilds() && !node.hasEntry()) {
+    if (node.hasChilds() && entry) {
       this.addInput(character);
       this.temporaryEntry = undefined;
 
       return true;
     }
 
-    if (node.hasChilds() && node.hasEntry()) {
+    if (node.hasChilds() && entry) {
       this.addInput(character);
       this.temporaryEntry = node.entry;
 
       return true;
     }
+
+    return false;
   }
 
+  /**
+   * @param {string} input
+   */
   addInput(input) {
     // dismiss when null-like object is passed
     if (input == null) {
@@ -149,11 +157,10 @@ export class StrokeState {
     this.input += input;
   }
 
+  /**
+   * @param {string} output
+   */
   addOutput(output) {
-    if (output == null) {
-      throw new Error('null-likeな値は追加できません');
-    }
-
     this.output += output;
   }
 

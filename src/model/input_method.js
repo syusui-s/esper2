@@ -1,6 +1,10 @@
 /** @module model/input_method */
 
-import { KeyboardMap } from './keyboard_map.js';
+/**
+ * @typedef { import('./keyboard_map.js').KeyboardMap } KeyboardMap
+ * @typedef { import('./stroke.js').StrokeTable } StrokeTable
+ * @typedef { import('./key_event.js').KeyEvent } KeyEvent
+ */
 
 /**
  * 入力方式
@@ -16,11 +20,9 @@ import { KeyboardMap } from './keyboard_map.js';
 class InputMethod {
   /**
    * @param {string} name 入力方式名
-   * @param {array} characterTypes 対応する文字種の配列
    */
-  constructor(name, characterTypes) {
+  constructor(name) {
     this.name = name;
-    this.characterTypes = characterTypes;
 
     this.reset();
   }
@@ -62,28 +64,32 @@ class InputMethod {
   /**
    * @abstract
    * @param {KeyboardEvent} keyEvent
+   * @name consume
    */
-  consume(keyEvent) {}
 }
 
 /**
- * キーボード配列に基づいて、キーボードの配列
+ * キーボード配列とローマ字テーブル
  */
-class KeyboardMapInputMethod extends InputMethod {
+export class StrokeTableInputMethod extends InputMethod {
   /**
-   * @param {keyboardMap} KeyboardMap
+   * @param {KeyboardMap} keyboardMap
+   * @param {StrokeTable} strokeTable
    */
-  constructor(keyboardMap) {
-    super(keyboardMap.name, keyboardMap.characterTypes);
+  constructor(keyboardMap, strokeTable) {
+    super(keyboardMap.name);
     this.keyboardMap = keyboardMap;
+    this.strokeTable = strokeTable;
   }
 
   /**
    * @override
+   * @param {KeyEvent} keyEvent
    */
   consume(keyEvent) {
-    const keyEntry = this.keyboardMap.getKeyEntry(keyEvent.code);
-    const character = keyEntry.getCharacter();
-    this.addOutput(character);
+    const character = this.keyboardMap.getCharacter(keyEvent);
+    if (character) {
+      this.addOutput(character);
+    }
   }
 }

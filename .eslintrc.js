@@ -10,6 +10,7 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
   "plugins": [
+    "prettier",
     "@typescript-eslint",
   ],
   "parser": "@typescript-eslint/parser",
@@ -18,40 +19,18 @@ module.exports = {
     "project": "./tsconfig.json",
   },
   "rules": {
-    "indent": [
+    "prettier/prettier": [
       "error",
-      2
+      {
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
     ],
-    "linebreak-style": [
+    "no-console": [
       "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "eqeqeq": ["error", "always"],
-    "arrow-body-style": "error",
-    "arrow-parens": ["error", "as-needed"],
-    "arrow-spacing": "error",
-    "generator-star-spacing": "error",
-    "no-duplicate-imports": "error",
-    "no-useless-computed-key": "error",
-    "no-useless-constructor": "error",
-    "no-useless-rename": "error",
-    "no-var": "error",
-    "object-shorthand": "error",
-    "prefer-arrow-callback": "error",
-    "prefer-const": "error",
-    "prefer-rest-params": "error",
-    "prefer-spread": "error",
-    "prefer-template": "error",
-    "rest-spread-spacing": "error",
-    "template-curly-spacing": "error",
-    "yield-star-spacing": "error"
-  },
+      {
+        "allow": ["log", "warn", "error"]
+      }
+    ]
+  }
 };

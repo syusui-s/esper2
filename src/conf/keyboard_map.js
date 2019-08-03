@@ -1,6 +1,23 @@
-import { KeyboardMap } from '../model/keyboard_map.mjs';
+import { KeyboardMap } from '../model/keyboard_map.js';
 
+/**
+ * キーボード配列
+ *
+ * @typedef KeyboardMapObj
+ * @prop {Map<String, KeyboardMap>} map
+ */
 export class KeyboardMaps {
+  /**
+   * @typedef {{ direct: string, shift: string }} KeyboardMapEntry
+   *     direct: 直接入力時の入力文字
+   *     shift: Shiftキー押下時の入力文字
+   * @typedef {{ [keycode: string]: KeyboardMapEntry }} KeyboardMapsObject
+   *     keycode: キーコード
+   * @typedef {{ id: string, name: string, map: KeyboardMapsObject }[]} KeyboardMapsDefinition
+   *     id   キーボード配列ID
+   *     name キーボード配列名
+   * @param {KeyboardMapsDefinition} keyboardMaps
+   */
   constructor(keyboardMaps) {
     this.map = new Map();
 
@@ -9,6 +26,9 @@ export class KeyboardMaps {
     });
   }
 
+  /**
+   * @param {string} id
+   */
   findById(id) {
     return this.map.get(id);
   }
@@ -64,14 +84,14 @@ export default new KeyboardMaps([
       Digit4: { direct: '4', shift: '$' },
       Digit5: { direct: '5', shift: '%' },
       Digit6: { direct: '6', shift: '&' },
-      Digit7: { direct: '7', shift: '\'' },
+      Digit7: { direct: '7', shift: "'" },
       Digit8: { direct: '8', shift: '(' },
       Digit9: { direct: '9', shift: ')' },
       Digit0: { direct: '0', shift: '0' },
       Minus: { direct: '@', shift: '`' },
       Equal: { direct: '^', shift: '~' },
-      IntlYen: { direct: '¥', shift: '|' }
-    }
+      IntlYen: { direct: '¥', shift: '|' },
+    },
   },
   {
     id: 'dvorak_jp106',
@@ -118,13 +138,13 @@ export default new KeyboardMaps([
       Digit4: { direct: '4', shift: '$' },
       Digit5: { direct: '5', shift: '%' },
       Digit6: { direct: '6', shift: '&' },
-      Digit7: { direct: '7', shift: '\'' },
+      Digit7: { direct: '7', shift: "'" },
       Digit8: { direct: '8', shift: '(' },
       Digit9: { direct: '9', shift: ')' },
       Digit0: { direct: '0', shift: '0' },
       Minus: { direct: '@', shift: '`' },
       Equal: { direct: '^', shift: '~' },
-      IntlYen: { direct: '¥', shift: '|' }
-    }
-  }
+      IntlYen: { direct: '¥', shift: '|' },
+    },
+  },
 ]);
