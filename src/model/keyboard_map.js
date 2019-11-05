@@ -1,7 +1,6 @@
-/** @module model/keyboard_map */
-
-// eslint-disable-next-line
-import { KeyEvent } from './key_event.js';
+/**
+ * @typedef {import('./key_event.js').KeyEvent} KeyEvent
+ */
 
 /**
  * 特定のコードに対応するアルファベットや記号を表す
@@ -52,7 +51,7 @@ export class KeyboardMap {
    * キーイベントに対応する文字を取得する
    *
    * @param {KeyEvent} keyEvent
-   * @return {string?}
+   * @return {string?} 対応する文字を返す。nullを返す可能性がある。
    */
   getCharacter(keyEvent) {
     const keyEntry = this.map.get(keyEvent.code);

@@ -1,8 +1,10 @@
 /** @module model/input_method */
 
+import { StrokeState } from './stroke_state.js';
+
 /**
  * @typedef { import('./keyboard_map.js').KeyboardMap } KeyboardMap
- * @typedef { import('./stroke.js').StrokeTable } StrokeTable
+ * @typedef { import('./stroke_table.js').StrokeTable } StrokeTable
  * @typedef { import('./key_event.js').KeyEvent } KeyEvent
  */
 
@@ -65,13 +67,15 @@ class InputMethod {
    * @abstract
    * @param {KeyboardEvent} keyEvent
    * @name consume
+   *
+   * イベントを消費する
    */
 }
 
 /**
  * キーボード配列とローマ字テーブル
  */
-export class StrokeTableInputMethod extends InputMethod {
+export class DirectInputMethod extends InputMethod {
   /**
    * @param {KeyboardMap} keyboardMap
    * @param {StrokeTable} strokeTable
@@ -88,8 +92,42 @@ export class StrokeTableInputMethod extends InputMethod {
    */
   consume(keyEvent) {
     const character = this.keyboardMap.getCharacter(keyEvent);
-    if (character) {
+
+    if (character != null) {
       this.addOutput(character);
+    }
+  }
+}
+
+/**
+ * キーボード配列とローマ字テーブル
+ */
+export class StrokeTableInputMethod extends InputMethod {
+  /**
+   * @param {KeyboardMap} keyboardMap
+   * @param {StrokeTable} strokeTable
+   */
+  constructor(keyboardMap, strokeTable) {
+    super(keyboardMap.name);
+    this.keyboardMap = keyboardMap;
+    this.strokeState = new StrokeState(strokeTable);
+  }
+
+  /**
+   * @override
+   * @param {KeyEvent} keyEvent
+   */
+  consume(keyEvent) {
+    const character = this.keyboardMap.getCharacter(keyEvent);
+
+    if (character != null) {
+      this.strokeState.addCharacter(character);
+
+      const output = this.strokeState.takeOutput();
+
+      if (output != null) {
+        this.addOutput(output);
+      }
     }
   }
 }

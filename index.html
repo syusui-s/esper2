@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Esper2 Config</title>
+    <link rel="stylesheet" href="./static/main.css" type="text/css" media="screen" charset="utf-8">
+    <script type="module" src="./src/main.js" async="true"></script>
+  </head>
+  <body>
+    <div class="type-interface">
+      <noscript>JavaScriptが必要です。</noscript>
+      <div class="js-app" contenteditable>
+      </div>
+    </div>
+    <script>
+      const root = document.querySelector('.js-app');
+      root.addEventListener('keydown', ev => {
+        root.textContent = ev.key;
+      });
+    </script>
+  </body>
+</html>

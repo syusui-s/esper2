@@ -6,6 +6,7 @@
     "test": "test"
   },
   "scripts": {
+    "build": "",
     "typecheck": "tsc",
     "test": "mocha --require ts-node/register ./test/*.js",
     "lint": "eslint src/**/*.js test/**/*.js",
