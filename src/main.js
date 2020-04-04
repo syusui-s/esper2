@@ -1,6 +1,6 @@
 import KeyboardMaps from './conf/keyboard_map.js';
 import { StrokeTableInputMethod } from './model/input_method.js';
-import { StrokeTable } from './model/stroke.js';
+import { StrokeTable } from './model/stroke_table.js';
 import { KeyEvent } from './model/key_event.js';
 
 const keyboardMap = KeyboardMaps.findById('dvorak_jp106');
@@ -718,6 +718,9 @@ const handler = ev => {
   const constructor = ev.constructor;
   const newEvent = new constructor(ev.type, copied);
   newEvent.fromRet = true;
+
+  // TODO currentTargetとtargetの違い
+
   ev.target.dispatchEvent(newEvent);
 
 };

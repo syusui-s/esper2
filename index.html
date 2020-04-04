@@ -9,13 +9,19 @@
   <body>
     <div class="type-interface">
       <noscript>JavaScriptが必要です。</noscript>
-      <div class="js-app" contenteditable>
+      <div class="js-app" contenteditable></div>
+      <div>
+        Content below should be overridden:
+        <div class="js-text"></div>
       </div>
     </div>
     <script>
-      const root = document.querySelector('.js-app');
-      root.addEventListener('keydown', ev => {
-        root.textContent = ev.key;
+      // const root = document.querySelector('.js-app');
+      const root = document.body;
+      const text = document.querySelector('.js-text');
+      window.addEventListener('keydown', ev => {
+        // ev can be prevent default?
+        text.textContent += ev.key;
       });
     </script>
   </body>

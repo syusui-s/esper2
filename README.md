@@ -4,7 +4,7 @@
 
 **CURRENTLY UNDER DEVELOPMENT**
 
-Esper (ES Typerの略) は、モダンブラウザ向けのタイピングソフトです。
-
-Esper (abbr of ES Typer) is a typing software for Modern Browser.
-Esper requires latest ECMAScript featues; ES Modules, class syntax and etc.
+```
+ruby -run -e httpd . -p 8000
+WEBBROWSER http://localhost:8000/
+```
